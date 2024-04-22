@@ -24,8 +24,8 @@ Description: Provides parameters for Pyradiomics feature extraction. The path to
 RaCat_sample_config.ini
 Description: Configuration file for RaCat, used to specify settings for radiomic extraction from annotated CT images. The path to this file must be specified in the command in RaCat-commandline.txt
 
-**Additional Resources**
-Additional Scripts: Located in additional_scripts/, these Python files are used for further analysis of the data and for calculating correlations as discussed in our associated paper (currently under review).
+**Additional Scripts**
+Analysis Scripts: Located in analysis/, these Python files are used for further analysis of the data and for calculating correlations as discussed in our associated paper (currently under review).
 
 **Data**
 Due to privacy and data protection laws, patient data in .h5 format is not publicly available in this repository. 
