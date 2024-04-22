@@ -10,14 +10,14 @@ import scipy
 
 
 #path of the main folder
-main_dir = Path('/media/sf_Shared-Linux/Shared-Linux/IUCPQ/EGFR_prediction/test_samples/iucpq-Venkata/')
+main_dir = Path('path of the main folder')
 #read the features from an Excel file
-rad_data = pd.read_excel(os.path.join(main_dir, 'Results/DGX_output/radiomicsfeatures_pyrads_binwidth25.xlsx')) 
+rad_data = pd.read_excel(os.path.join(main_dir, 'pyrads_features.xlsx')) 
 
-#racat_data = pd.read_csv(os.path.join(main_dir, 'Results/PC_output/RaCat_concat_bin25.csv')) 
+#racat_data = pd.read_csv(os.path.join(main_dir, 'racat_features.csv')) 
 
 #read the additinal data from .Rdata
-addi_data = pyreadr.read_r(os.path.join(main_dir,"iucpq_data/oncotech_container_IUCPQ_clinical_ihc_RNAseq_pyrads_FREEZEmarch2022.Rdata"))
+addi_data = pyreadr.read_r(os.path.join(main_dir,"clinical_ihc_data.Rdata"))
 
 #read data from .Rdata file
 clinical_data = pd.DataFrame(addi_data["clinical_IUCPQ"])
@@ -60,7 +60,6 @@ rads_iucpq_data_intersected_total = rads_iucpq_data.loc[index_intersection_total
 # select the float columns from rad_data
 rad_data = rad_data.select_dtypes(include=[float])
 # examining missing values from rad_data
-#print(reader_data.isnull().values.any())
 #print(reader_data.isnull().sum().sum())
 
 #place inf with nan in rad_data
@@ -81,35 +80,7 @@ rad_data_common_rads_iucpq = rad_data.loc[:, radiomics_common_header]
 rad_data_intersected_total = rad_data.loc[index_intersection_total]
 rad_data_intersected = rad_data.loc[index_intersection_clinical]
 rad_iucpq_data_intersected = rads_iucpq_data.loc[index_intersection_clinical]
-"""
-#save the Rdata file as an excel file
-writer = pd.ExcelWriter(os.path.join(main_dir,'Results/data_analysis/Pyrads/clinical_IHC_rads_iucpq.xlsx'), engine='xlsxwriter')
-wb  = writer.book
-clinical_data.to_excel(writer, sheet_name="clinical_data")    ## write into excel
-IHC_data.to_excel(writer, sheet_name="IHC")    ## write into excel
-rads_iucpq_data.to_excel(writer, sheet_name="radiomics_iucpq")    ## write into excel
-wb.close()
 
-#save the clinical and IHC data for the patients with available radiomic features (available CT and seg)
-writer = pd.ExcelWriter(os.path.join(main_dir,'Results/data_analysis/Pyrads/clinical_IHC_individual_inter_with_rads_bc512.xlsx'), engine='xlsxwriter')
-wb  = writer.book
-clinical_data_intersected.to_excel(writer, sheet_name="clinical_data")    ## write into excel
-IHC_data_intersected.to_excel(writer, sheet_name="IHC")    ## write into excel
-rads_iucpq_data_intersected.to_excel(writer, sheet_name="radiomics_iucpq")    ## write into excel
-rad_data_intersected.to_excel(writer, sheet_name="radiomics_pyrads_bc512")    ## write into excel
-
-wb.close()
-
-#save the data for the patients with available radiomic features (available CT and seg)
-writer = pd.ExcelWriter(os.path.join(main_dir, 'Results/data_analysis/Pyrads/clinical_IHC_rads_bw50_IUCPQ_intersection.xlsx'), engine='xlsxwriter')
-wb  = writer.book
-clinical_data_intersected_total.to_excel(writer, sheet_name="clinical_data")    ## write into excel
-IHC_data_intersected_total.to_excel(writer, sheet_name="IHC")    ## write into excel
-rads_iucpq_data_intersected_total.to_excel(writer, sheet_name="radiomics_iucpq")    ## write into excel
-rad_data_intersected_total.to_excel(writer, sheet_name="radiomics_pyrads_bw50")    ## write into excel
-
-wb.close()
-"""
 endpoint_label = ["os_days", "pfs_days"]
 
 
@@ -133,12 +104,12 @@ for label in endpoint_label:
 	feature_importances = pd.Series(list(map(abs, corr_prs_total)), index = rad_iucpq_data_intersected.columns[1:])
 	feature_importances.nlargest(len(rad_iucpq_data_intersected.columns[1:]))
 	rank_features = feature_importances.rank(ascending=False)
-	writer = pd.ExcelWriter(os.path.join(main_dir, 'Results/data_analysis/Pyrads/rank_iucpq_rads_bw25_'+label+'.xlsx'), engine='xlsxwriter')
+	writer = pd.ExcelWriter(os.path.join(main_dir, '/rank_iucpq_rads_bw25_'+label+'.xlsx'), engine='xlsxwriter')
 	wb  = writer.book
 	rank_features.to_excel(writer, sheet_name="rank_iucpq_rads_bw25_"+label)    ## write into excel 
 	wb.close()
 
-	writer = pd.ExcelWriter(os.path.join(main_dir, 'Results/data_analysis/Pyrads/correlation_iucpq_rads_bw25_'+label+'.xlsx'), engine='xlsxwriter')
+	writer = pd.ExcelWriter(os.path.join(main_dir, '/correlation_iucpq_rads_bw25_'+label+'.xlsx'), engine='xlsxwriter')
 	wb  = writer.book
 	df = pd.DataFrame(corr_prs_total, columns = ["corr_prs"], index = rad_iucpq_data_intersected.columns[1:])     ## put into a dataframe format
 	df["p-value_prs"] = corr_prs_pvalue_total
@@ -146,39 +117,8 @@ for label in endpoint_label:
 	df["p-value_spr"] = corr_spr_pvalue_total
 	df.to_excel(writer, sheet_name="corr_rads_bw25_"+label)    ## write into excel 
 	wb.close()
-"""
-	#Visualize the importance of features for F-test regression
-	plt.figure(num=None, figsize=(120,100), dpi=200, facecolor='w', edgecolor='k')
-	feature_importances = pd.Series(list(map(abs, corr_prs_total)), index = rad_data_intersected_total.columns)
-	feature_importances.nlargest(len(rad_data_intersected_total.columns)).plot(kind='barh', color='lightsteelblue')
-	plt.ylabel("Feature", fontsize= 80, labelpad= 50)
-	plt.xlabel("Score (Pearson CC)", fontsize= 80, labelpad= 50)
-	plt.xticks(fontsize=70)
-	plt.yticks(fontsize=5)
-	plt.title("The importance of the features for " +label+ " prediction" +" from Pyrads with bincount = 512", fontdict={'fontsize':80}, y= 1.02)
-	plt.savefig(os.path.join(main_dir, "importance_cc_pear_Pyrads_bw50_"+label +"_.png"))
-
-"""
-exit()
-#save the radiomics from iucpq data and the extracted radiomic features from pyrads with the same labels in one excel file
-writer = pd.ExcelWriter(os.path.join(main_dir,'Results/data_analysis/Pyrads/radiomicsfeatures_pyrads_bw50_clean_common_with_iucpq_radiomics_labels.xlsx'), engine='xlsxwriter')
-wb  = writer.book
-rad_data_common_rads_iucpq.to_excel(writer, sheet_name="pyrads_me")    ## write into excel
-rads_iucpq_common_rad_data.to_excel(writer, sheet_name="pyrads_iucpq_data")
-wb.close()
 
 
-#save the extracted radiomic features from pyrads or Racat after cleaning
-writer = pd.ExcelWriter(os.path.join(main_dir,'Results/data_analysis/Pyrads/radiomicsfeatures_pyrads_bw50_clean.xlsx'), engine='xlsxwriter')
-wb  = writer.book
-rad_data.to_excel(writer, sheet_name="radiomic features")    ## write into excel
-wb.close()
-
-
-
-
-
-exit()
 #get correlations between the features in dataset 
 corr_matrix = rad_data.corr()
 # Select upper triangle of correlation matrix
@@ -198,17 +138,3 @@ cbar.ax.tick_params(labelsize=40)
 plt.xticks(fontsize=10)
 plt.yticks(fontsize=10)
 plt.savefig(os.path.join(main_dir, "Results/Plots/RaCat_concat_bin25.png"), bbox_inches='tight')
-
-#drop the features with high correlation
-rad_data = rad_data.drop(labels = column_to_drop, axis=1)
-
-#plot the heatmap of the correlation Matrix after dropping the most correlated features
-corr_matrix_dropped = reader_data.corr()
-corr_features_ind = corr_matrix_dropped.index
-plt.figure(figsize=(50,50))
-ax=sns.heatmap(reader_data[corr_features_ind].corr(),annot=False,cmap="RdYlGn", vmin=-1,vmax=1)
-cbar = ax.collections[0].colorbar
-cbar.ax.tick_params(labelsize=40)
-plt.xticks(fontsize=10)
-plt.yticks(fontsize=10)
-plt.savefig(os.path.join(main_dir, "Results/Plots/RaCat_concat_bin25_dropped.png"), bbox_inches='tight')
