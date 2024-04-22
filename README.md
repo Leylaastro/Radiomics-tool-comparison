@@ -1,5 +1,5 @@
 # Radiomics-tool-comparison
-**Project Overview**
+
 This project aims to investigate the correlation between radiomic features extracted using Pyradiomics and RaCat, and their association with immunotherapy biomarkers in patients with Non-Small Cell Lung Cancer (NSCLC). This analysis utilizes two different gray level discretization settings in Pyradiomics.
 
 We utilize computed tomography (CT) annotated images of 164 patients, provided in an h5 file, to extract the relevant radiomic features.
