@@ -8,12 +8,12 @@ import statistics
 
 
 #path of the main folder
-main_dir = Path('/media/sf_Shared-Linux/Shared-Linux/IUCPQ/EGFR_prediction/test_samples/iucpq-Venkata/')
+main_dir = Path('path of main folder')
 
 #read the features from an Excel file
-df_pyrads_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='pyrads-common-racat' )
-df_racat_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='racat-common-pyrads')  
-df_features = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='common-features')  
+df_pyrads_data = pd.read_excel(os.path.join(main_dir, 'clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='pyrads-common-racat' )
+df_racat_data = pd.read_excel(os.path.join(main_dir, 'clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='racat-common-pyrads')  
+df_features = pd.read_excel(os.path.join(main_dir, 'clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='common-features')  
 
 #label of common features
 features = df_features['group']
@@ -49,7 +49,6 @@ for label, nums in label_dict.items():
     	std_dev=0
     mean_corr.append(mean)
     std_corr.append(std_dev)
-#    print(f"Label {label}: Mean = {mean}, Standard Deviation = {std_dev}")
 
 # Create lists for the plot
 fetaure_group = ['Shape', 'Intensity', 'Texture']
