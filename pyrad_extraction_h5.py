@@ -62,7 +62,7 @@ df_ids.to_excel(file_oncotech_ids, sheet_name="IDs", index=False)
 # Create a DataFrame from the list of list of features
 df_rads = pd.DataFrame(data=data, index = selected_fkeys, columns=features_key)
 # Specify the rads file path
-file_radiomics = os.path.join(main_dir_path,'radiomicsfeatures_new.xlsx')
+file_radiomics = os.path.join(main_dir_path,'pyradiomics_features.xlsx')
 # Save the DataFrame to Excel file
 df_rads.to_excel(file_radiomics, sheet_name="radiomic features")                                     ## write into excel
 
