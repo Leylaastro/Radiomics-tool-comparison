@@ -64,16 +64,6 @@ for i in range(1,df_racat_data.shape[1]):
     p_values_spear_racat.append(pvalue)
 
 
-#function to calculate f-test
-"""
-def f_test(group1, group2):
-    f = np.var(group1, ddof=1)/np.var(group2, ddof=1)
-    nun = len(group1)-1
-    dun = len(group2)-1
-    p_value = 1-scipy.stats.f.cdf(f, nun, dun)
-    return f, p_value
-"""
-
 # Loop through each column index and calculate kendall correlation between each radiomic feature in Pyrads and the endpoint
 correlations_kendal_pyrads = []
 p_values_kendal_pyrads = []
