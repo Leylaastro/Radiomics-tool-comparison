@@ -1,3 +1,4 @@
 #This line of code can be used in the command line to extract radiomics by RaCat. To use RaCat for radiomic extraction, after installation of RaCat, which has been described in https://github.com/EPfaehler/RaCat, for the number of images and segmentation #files that we have from 0 to N, the configuration file of RaCat, the image (which is a nifti file in our case), the volume of interest (segmentation file which is a nifit file in our case) and an output folder should be specified in the command line. radiomics are #extracted for the number of images given in the for loop and saved in the output folder. 
+Basically, the command line should be like "the path to the Radiomics file" --ini "the path to the configuration ini file" --img "the path to the CT images folder" --voi "the path to the Segmenation folder" --out "the path to the output folder"
 
-for i in `seq 0 N`; do config-RaCat.ini --img 0$i-IUCPQ_ct.nii --voi 0$i-IUCPQ_seg.nii --out RaCat_Nifti $i; done
+for i in `seq 0 N`; do "the path to the Radiomics file" --ini config-RaCat.ini --img 0$i-IUCPQ_ct.nii --voi 0$i-IUCPQ_seg.nii --out RaCat_Nifti $i; done
