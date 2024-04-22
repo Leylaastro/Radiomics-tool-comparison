@@ -137,4 +137,4 @@ cbar = ax.collections[0].colorbar
 cbar.ax.tick_params(labelsize=40)
 plt.xticks(fontsize=10)
 plt.yticks(fontsize=10)
-plt.savefig(os.path.join(main_dir, "Results/Plots/RaCat_concat_bin25.png"), bbox_inches='tight')
+plt.savefig(os.path.join(main_dir, "/RaCat_concat_bin25.png"), bbox_inches='tight')
