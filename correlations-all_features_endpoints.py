@@ -12,21 +12,21 @@ from scipy.stats import f_oneway, kruskal
 
 
 #path of the main folder
-main_dir = Path('/media/sf_Shared-Linux/Shared-Linux/IUCPQ/EGFR_prediction/test_samples/iucpq-Venkata/')
+main_dir = Path('path of the main folder')
 
 
 #read the features from Excel files
-#df_pyrads_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='radiomics_pyrads_bw25' )
-df_pyrads_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bc128.xlsx'), sheet_name='radiomics_pyrads_bc128' )
-df_clinical_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='clinical_data' )
-df_IHC_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='IHC' )
-#df_racat_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_racat.xlsx'), sheet_name='radiomics_racat')  
-df_racat_data = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bc512.xlsx'), sheet_name='radiomics_pyrads_bc512')  
-df_features_common = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='common-features')  
-df_features_pyrads = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='features-Pyrads')  
-df_features_racat = pd.read_excel(os.path.join(main_dir, 'Results/data_analysis/final-analysis/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='features-RaCat')  
+#df_pyrads_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='radiomics_pyrads_bw25' )
+df_pyrads_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bc128.xlsx'), sheet_name='radiomics_pyrads_bc128' )
+df_clinical_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='clinical_data' )
+df_IHC_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='IHC' )
+#df_racat_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_racat.xlsx'), sheet_name='radiomics_racat')  
+df_racat_data = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bc512.xlsx'), sheet_name='radiomics_pyrads_bc512')  
+df_features_common = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='common-features')  
+df_features_pyrads = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='features-Pyrads')  
+df_features_racat = pd.read_excel(os.path.join(main_dir, '/clinical_IHC_individual_inter_with_rads_pyrads_bw25.xlsx'), sheet_name='features-RaCat')  
 
-# Loop through each column index and calculate Pearson correlation between each radiomic feature in Pyrads and survival endpoint
+# Loop through each column index and calculate Pearson correlation between each radiomic feature in Pyrads and the endpoint
 correlations_pearson_pyrads = []
 p_values_pearson_pyrads = []
 for i in range(1,df_pyrads_data.shape[1]):
@@ -35,7 +35,7 @@ for i in range(1,df_pyrads_data.shape[1]):
     correlations_pearson_pyrads.append(corr)
     p_values_pearson_pyrads.append(pvalue)
 
-# Loop through each column index and calculate Pearson correlation between each radiomic feature in RaCat and survival endpoint
+# Loop through each column index and calculate Pearson correlation between each radiomic feature in RaCat and the endpoint
 correlations_pearson_racat = []
 p_values_pearson_racat = []
 for i in range(1,df_racat_data.shape[1]):
@@ -45,7 +45,7 @@ for i in range(1,df_racat_data.shape[1]):
 	p_values_pearson_racat.append(pvalue)
 
 
-# Loop through each column index and calculate Spearman correlation between each radiomic feature in RaCat and survival endpoint
+# Loop through each column index and calculate Spearman correlation between each radiomic feature in Pyrads and the endpoint
 correlations_spear_pyrads = []
 p_values_spear_pyrads = []
 for i in range(1,df_pyrads_data.shape[1]):
@@ -53,7 +53,8 @@ for i in range(1,df_pyrads_data.shape[1]):
     corr, pvalue = spearmanr(df_pyrads_data.iloc[:, i][mask], df_IHC_data['CD8_total'][mask])
     correlations_spear_pyrads.append(corr)
     p_values_spear_pyrads.append(pvalue)
-
+	
+# Loop through each column index and calculate Spearman correlation between each radiomic feature in Pyrads and the endpoint
 correlations_spear_racat = []
 p_values_spear_racat = []
 for i in range(1,df_racat_data.shape[1]):
@@ -73,7 +74,7 @@ def f_test(group1, group2):
     return f, p_value
 """
 
-
+# Loop through each column index and calculate kendall correlation between each radiomic feature in Pyrads and the endpoint
 correlations_kendal_pyrads = []
 p_values_kendal_pyrads = []
 for i in range(1,df_pyrads_data.shape[1]):
@@ -82,6 +83,7 @@ for i in range(1,df_pyrads_data.shape[1]):
     correlations_kendal_pyrads.append(corr)
     p_values_kendal_pyrads.append(pvalue)
 
+# Loop through each column index and calculate kendall correlation between each radiomic feature in racat and the endpoint
 correlations_kendal_racat = []
 p_values_kendal_racat = []
 for i in range(1,df_racat_data.shape[1]):
@@ -90,25 +92,7 @@ for i in range(1,df_racat_data.shape[1]):
     correlations_kendal_racat.append(corr)
     p_values_kendal_racat.append(pvalue)
 
-"""
-# Loop through each column index and calculate f-value and p-value from f-test
-ftest_pyrads = []
-p_values_ftest_pyrads = []
-for i in range(1,df_pyrads_data.shape[1]):
-    mask = ~np.isnan(df_pyrads_data.iloc[:, i]) & ~np.isnan(df_IHC_data['CD8_total'])
-    fvalue, pvalue = kruskal(df_pyrads_data.iloc[:, i][mask], df_IHC_data['CD8_total'][mask])
-    ftest_pyrads.append(abs(fvalue))
-    p_values_ftest_pyrads.append(pvalue)
 
-ftest_racat = []
-p_values_ftest_racat = []
-for i in range(1,df_racat_data.shape[1]):
-    mask = ~np.isnan(df_racat_data.iloc[:, i]) & ~np.isnan(df_IHC_data['CD8_total'])
-    fvalue, pvalue = kruskal(df_racat_data.iloc[:, i][mask], df_IHC_data['CD8_total'][mask])
-    ftest_racat.append(abs(fvalue))
-    p_values_ftest_racat.append(pvalue)
-
-"""
 #dataframe of Pyrads correlation results
 data_pyrads = {'corr_pyrads_spear':correlations_spear_pyrads[0:], 'pval_pyrads_spear':p_values_spear_pyrads[0:],
 'corr_pyrads_pear':correlations_pearson_pyrads[0:], 'pval_pyrads_pear':p_values_pearson_pyrads[0:],
@@ -132,12 +116,12 @@ df_racat['Pearson'] = df_racat['pval_racat_pear'] < 0.05
 df_racat['kendal'] = df_racat['pval_racat_kendal'] < 0.05
 
 #save the results in excel files
-writer = pd.ExcelWriter(os.path.join(main_dir, 'Results/data_analysis/final-analysis/evaluators_all_features_pyrads_bc128_cd8.xlsx'), engine='xlsxwriter')
+writer = pd.ExcelWriter(os.path.join(main_dir, '/evaluators_all_features_pyrads_bc128_cd8.xlsx'), engine='xlsxwriter')
 wb  = writer.book
 df_pyrads.to_excel(writer)    ## write into excel
 wb.close()
 
-writer = pd.ExcelWriter(os.path.join(main_dir, 'Results/data_analysis/final-analysis/evaluators_all_features_pyrads_bc512_cd8.xlsx'), engine='xlsxwriter')
+writer = pd.ExcelWriter(os.path.join(main_dir, '/evaluators_all_features_racat_cd8.xlsx'), engine='xlsxwriter')
 wb  = writer.book
 df_racat.to_excel(writer)    ## write into excel
 wb.close()
