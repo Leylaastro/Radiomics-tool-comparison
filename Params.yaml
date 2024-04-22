@@ -45,6 +45,8 @@ setting:
   # extract firstorder:Range from the dataset to analyze, and choose a binwidth so, that range/binwidth remains approximately
   # in this range of bins.
   binWidth: 25
+  #binWidth: 50
+  #binCount: 128
   #binCount: 512
 
   # first order specific settings:
